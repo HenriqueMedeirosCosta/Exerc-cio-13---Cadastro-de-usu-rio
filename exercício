@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TAM 3
+
+typedef struct {
+    int id;
+    char nome[20];
+    char email[30];
+    char sexo[10];
+    char endereco[50];
+    double altura;
+    int vacina;
+} Usuario;
+
+int geradorId() {
+    static int id = 1;
+    return id++;
+}
+
+void cadastrar(Usuario a[], int *totalCadastrados) {
+    a[*totalCadastrados].id = geradorId();
+
+    printf("Digite o nome do usuario:\n");
+    scanf(" %[^\n]s", a[*totalCadastrados].nome);
+
+    printf("Digite o email do usuario:\n");
+    scanf(" %[^\n]s", a[*totalCadastrados].email);
+
+    printf("Digite o sexo do usuario:\n");
+    scanf(" %[^\n]s", a[*totalCadastrados].sexo);
+
+    printf("Digite o endereco do usuario:\n");
+    scanf(" %[^\n]s", a[*totalCadastrados].endereco);
+
+    printf("Digite a altura do usuario:\n");
+    scanf("%lf", &a[*totalCadastrados].altura);
+
+    printf("O usuario tomou vacina:\n1-Sim\n2-Não\n");
+    scanf("%d", &a[*totalCadastrados].vacina);
+
+    (*totalCadastrados)++;
+    printf("\nCadastro realizado com sucesso!\n\n");
+}
+
+void listarUsuario(Usuario a[], int totalCadastrados) {
+    if (totalCadastrados == 0) {
+        printf("\nNão existem registros na lista!\n");
+    } else {
+        for (int i = 0; i < totalCadastrados; i++) {
+            printf("\nId: %d", a[i].id);
+            printf("\nNome: %s", a[i].nome);
+            printf("\nEmail: %s", a[i].email);
+            printf("\nSexo: %s", a[i].sexo);
+            printf("\nEndereco: %s", a[i].endereco);
+            printf("\nAltura: %.2lf", a[i].altura);
+            printf("\nVacina: %d", a[i].vacina);
+            printf("\n\n");
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    Usuario a[TAM];
+    int opcao, totalCadastrados = 0;
+
+    do {
+        printf("Digite 1 para cadastrar;\n");
+        printf("Digite 2 para listar;\n");
+        printf("Digite 0 para sair do sistema;\n");
+        printf("Digite a opção escolhida:\n");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                if (totalCadastrados < TAM) {
+                    cadastrar(a, &totalCadastrados);
+                } else {
+                    printf("\nLimite de usuários atingido!\n\n");
+                }
+                break;
+            case 2:
+                listarUsuario(a, totalCadastrados);
+                break;
+            case 0:
+                printf("Saindo do sistema. Até mais!\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (opcao != 0);
+
+    return 0;
+}
